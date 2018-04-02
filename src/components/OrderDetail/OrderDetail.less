@@ -1,0 +1,53 @@
+@import "~antd/lib/style/themes/default.less";
+
+.order-detail{
+  :global{
+    .relate-orders{
+      margin-bottom: 35px;
+      span{
+        display: inline-block;
+      }
+      .title{
+        font-weight: 500 !important;
+        color: #222;
+      }
+      .item{
+        margin-right: 10px;
+      }
+    }
+    [class~=title]{
+      font-weight: bold !important;
+    }
+    .ant-card-wider-padding{
+      .ant-card-head {
+        padding: 0 0;
+      }
+    }
+    .ant-card-contain-tabs{
+      .ant-card-body{
+        padding: 0;
+      }
+    }
+  }
+}
+
+.title {
+  color: @heading-color;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.extra-good-info{
+  font-weight: 600;
+  :global{
+    .ant-row-flex{
+      margin-bottom:8px;
+    }
+    .number{
+      display: inline-block;
+      width: 55px;
+    }
+  }
+}
