@@ -62,7 +62,7 @@ export default class DeliverContent extends Component {
 
   componentDidMount() {
     console.log('发货单didmount');
-    // this.props.handleValidate(this.props.form);
+    this.props.handleValidate(this.props.form);
   }
 
   handleChange = (value) => {
@@ -82,7 +82,7 @@ export default class DeliverContent extends Component {
     const { getFieldDecorator } = this.props.form;
     const { isShowDetail } = this.state;
     const { data } = this.props;
-    const guestInfo = data.guest_info;
+    const guestInfo = data.mother_info;
     console.log('props---', data);
     return (
       <div className="invoice-content">

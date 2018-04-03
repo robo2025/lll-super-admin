@@ -72,10 +72,10 @@ export default class OrderTable extends React.Component {
   }
 
   // 订单处理点击：催货、订单取消、收货延期
-handleOrderClick = (key) => {
-  const [modalKey, orderKey] = key.split('-');
-  this.props.onHandleOrderClick(modalKey, orderKey);
-}
+  handleOrderClick = (key) => {
+    const [modalKey, orderKey] = key.split('-');
+    this.props.onHandleOrderClick(modalKey, orderKey);
+  }
 
   render() {
     const { selectedRowKeys, totalCallNo, isShowModal } = this.state;
@@ -117,7 +117,7 @@ handleOrderClick = (key) => {
       {
         title: '交易总金额(元)',
         dataIndex: 'total_money',
-        width: 150,        
+        width: 150,
         key: 'total_money',
       },
       {
@@ -131,7 +131,7 @@ handleOrderClick = (key) => {
         title: '订单状态',
         dataIndex: 'order_status',
         key: 'order_status',
-        width: 100,        
+        width: 100,
         render: text => (<span>{mapOrderStatus[text - 1]}</span>),
       },
       {
@@ -153,13 +153,13 @@ handleOrderClick = (key) => {
           <Fragment>
             <a onClick={() => { this.handleOrderClick(`2-${text.id}`); }} disabled={![1, 3].includes(text.order_status)}>订单取消</a>
             <Divider type="vertical" />
-            <a href={'#/orders/list/detail?orderId=' + record.id}>查看</a>
+            <a href={'#/search/result/?id=' + record.son_order_sn}>查看</a>
           </Fragment>
         ),
         width: 200,
       },
     ];
-    
+
 
     const rowSelection = {
       selectedRowKeys,
@@ -169,13 +169,15 @@ handleOrderClick = (key) => {
       }),
     };
 
+    console.log('订单列表组件', this.props);
+
     return (
       <div >
         <Table
           with={800}
           loading={loading}
           rowKey={record => record.id}
-          dataSource={orderTableData}
+          dataSource={data || []}
           columns={columns}
           pagination={false}
           onChange={this.handleTableChange}

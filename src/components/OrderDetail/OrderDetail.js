@@ -127,13 +127,13 @@ const operationTabList = [{
 }];
 // 操作日志列
 const actionColumns = [{
-  title: '操作记录',
-  dataIndex: 'record',
-  key: 'record',
+  title: '操作记录ID',
+  dataIndex: 'id',
+  key: 'id',
 }, {
   title: '操作员',
-  dataIndex: 'guest_id',
-  key: 'guest_id',
+  dataIndex: 'operator',
+  key: 'operator',
 }, {
   title: '执行明细',
   dataIndex: 'execution_detail',
@@ -179,22 +179,22 @@ export default class OrderDetail extends Component {
     const { data } = this.props;
     const orderDetail = data;
     let {
-      order_info,
-      guest_info,
       receipt_info,
+      mother_info,
+      son_order_info,
+      payment_info,
       supplier_info,
-      order_detail,
       delivery_info,
-      operation } = orderDetail;
-    order_info = order_info || {};
-    guest_info = guest_info || {};
+      operation_record_info } = orderDetail;
     receipt_info = receipt_info || {};
+    mother_info = mother_info || {};
+    son_order_info = son_order_info || {};
+    payment_info = payment_info || {};
     supplier_info = supplier_info || {};
-    order_detail = order_detail || {};
     delivery_info = delivery_info || {};
-    operation = operation || [];
-    const orderGoodsList = [order_detail];
-    const exceptionAction = operation.filter((val) => {
+    operation_record_info = operation_record_info || [];
+    const orderGoodsList = [son_order_info];
+    const exceptionAction = operation_record_info.filter((val) => {
       return val.is_abnormal;
     });
     const contentList = {
@@ -204,7 +204,7 @@ export default class OrderDetail extends Component {
           pageSize: 6,
         }}
         loading={false}
-        dataSource={operation}
+        dataSource={operation_record_info}
         columns={actionColumns}
         rowKey="add_time"
       />,
@@ -245,19 +245,25 @@ export default class OrderDetail extends Component {
           <span className="item"><a href="">无货单</a></span>
         </div>
         <DescriptionList size="large" title="订单信息" style={{ marginBottom: 32 }}>
-          <Description term="客户订单编号">{order_info.order_sn}</Description>
-          <Description term="支付状态">{mapPayStatus[order_info.pay_status]}</Description>
-          <Description term="订单状态">{mapOrderStatus[order_info.order_status]}</Description>
-          <Description term="母订单编号">13214321432</Description>
-          <Description term="下单时间" >{moment(order_info.add_time * 1000).format('YYYY-MM-DD h:mm:ss')}</Description>
+          <Description term="客户订单编号">{son_order_info.son_order_sn}</Description>
+          <Description term="支付状态">{mapPayStatus[payment_info.pay_status]}</Description>
+          <Description term="订单状态">{mapOrderStatus[son_order_info.status]}</Description>
+          <Description term="母订单编号">{mother_info.order_sn}</Description>
+          <Description term="下单时间" >{moment(son_order_info.add_time * 1000).format('YYYY-MM-DD h:mm:ss')}</Description>
         </DescriptionList>
         <Divider style={{ marginBottom: 32 }} />
         <DescriptionList size="large" title="客户信息" style={{ marginBottom: 32 }}>
-          <Description term="用户姓名">{guest_info.receiver}</Description>
-          <Description term="联系电话">{guest_info.mobile}</Description>
+          <Description term="用户姓名">{mother_info.receiver}</Description>
+          <Description term="联系电话">{mother_info.mobile}</Description>
           <Description term="公司名称">菜鸟仓储</Description>
-          <Description term="收货地址">{guest_info.address}</Description>
-          <Description term="备注">{guest_info.remarks}</Description>
+          <Description term="收货地址">
+            {`${mother_info.province}
+             ${mother_info.city}     
+             ${mother_info.district}                         
+             ${mother_info.address}
+             `}
+          </Description>
+          <Description term="备注">{mother_info.remarks || '无'}</Description>
         </DescriptionList>
         <Divider style={{ marginBottom: 32 }} />
         <DescriptionList size="large" title="开票信息" style={{ marginBottom: 32 }}>

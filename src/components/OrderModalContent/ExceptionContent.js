@@ -37,7 +37,7 @@ class ExceptionContent extends Component {
   }
 
   componentDidMount() {
-    console.log('异常处理弹窗didmount');
+    console.log('异常处理弹窗didmount', this.props);
     this.props.handleValidate(this.props.form);
   }
 
@@ -58,7 +58,8 @@ class ExceptionContent extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { isHaveGoods } = this.state;
-    const { data } = this.props;
+    const { data, defaultValue } = this.props;
+    const sonOrderInfo = data.son_order_info;
 
 
     return (
@@ -75,7 +76,7 @@ class ExceptionContent extends Component {
               sm: { span: 8 },
             }}
           >
-            <span>{data.son_order_sn}</span>
+            <span>{sonOrderInfo.son_order_sn}</span>
           </FormItem>
           <FormItem
             label="原发货时间"
@@ -88,7 +89,7 @@ class ExceptionContent extends Component {
               sm: { span: 8 },
             }}
           >
-            <span>{moment(data.original_delivery_time * 1000).format('YYYY-MM-DD')}</span>
+            <span>{moment(sonOrderInfo.due_time * 1000).format('YYYY-MM-DD')}</span>
           </FormItem>
           <FormItem
             label="异常情况"
@@ -102,7 +103,7 @@ class ExceptionContent extends Component {
             }}
           >
             {
-              getFieldDecorator('abnormal_type', {
+              getFieldDecorator('operation_type', {
                 rules: [{
                   required: true,
                   message: '请选择异常情况',
@@ -133,7 +134,7 @@ class ExceptionContent extends Component {
                     })(
                       <DatePicker
                         allowClear={false}
-                        disabledDate={current => (this.disabledDate(current, data.original_delivery_time * 1000))}
+                        disabledDate={current => (this.disabledDate(current, sonOrderInfo.due_time * 1000))}
                       />
                     )
                   }

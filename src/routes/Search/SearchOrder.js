@@ -35,9 +35,6 @@ export default class SearchOrder extends Component {
           </div>
 
         </Content>
-        <Footer>
-          底部信息
-        </Footer>
       </Layout>
     );
   }

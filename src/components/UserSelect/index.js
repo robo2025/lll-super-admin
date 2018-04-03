@@ -4,14 +4,14 @@ import styles from './index.less';
 
 
 export default class UserSelect extends Component {
-   // 注册账号
-   registerAccount = () => {
+  // 注册账号
+  registerAccount = () => {
     register();
   }
 
 
-   /* 登出账号 */
-   logoutAccout = () => {
+  /* 登出账号 */
+  logoutAccout = () => {
     logout();
   }
 
@@ -38,7 +38,7 @@ export default class UserSelect extends Component {
         <div className="user-select-box">
           <ul className={styles['user-select']}>
             <li>{user.username}</li>
-            <li onClick={this.loginAccount}>登出</li>
+            <li onClick={this.logoutAccout}>登出</li>
           </ul>
         </div>
       );

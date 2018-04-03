@@ -30,10 +30,10 @@ export function register() {
 }
 // 登出
 export function logout() {
-  const access_token = Cookies.get('access_token');
-  if (access_token) {
+  const accessToken = Cookies.get('access_token');
+  if (accessToken) {
     Cookies.remove('access_token');
-    window.location.href = `${LOGOUT_URL}?access_token=${access_token}&next=${HOME_PAGE}`;
+    window.location.href = `${LOGOUT_URL}?access_token=${accessToken}&next=${HOME_PAGE}`;
   } else {
     window.location.href = `${LOGOUT_URL}`;
   }
@@ -50,5 +50,5 @@ export function login() {
 export function jumpToLogin() {
   // window.location.href = `${LOGIN_URL}?next=${encodeURIComponent(VERIFY_PAGE)}`;  
   // window.location.href = URL;
-  window.location.href = `${LOGIN_URL}?next=${encodeURIComponent(HOME_PAGE)}&disable_redirect=1`;  
+  window.location.href = `${LOGIN_URL}?next=${encodeURIComponent(HOME_PAGE)}&disable_redirect=1`;
 }

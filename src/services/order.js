@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 import { ORDERS_URL } from '../constant/config';
 import lyRequest from '../utils/lyRequest';
 
-const ORDER_SYS_URL = `${ORDERS_URL}/v1/chief`;
+const ORDER_SYS_URL = `${ORDERS_URL}/v1/superuser`;
 const SUPPLIER_SYS_URL = `${ORDERS_URL}/v1/supplier`;
 const ORDER_URL = `${ORDERS_URL}/v1/order`;
 
@@ -45,6 +45,40 @@ export async function queryOrderDetail({ orderId }) {
     },
   });
 }
+
+/**
+ * 发货接口
+ * 
+ */
+export async function queryDelivery({ orderId, data }) {
+  const accessToken = Cookies.get('access_token');
+  return lyRequest(`${ORDER_SYS_URL}/order/${orderId}`, {
+    method: 'put',    
+    headers: {
+      Authorization: accessToken,
+    },
+    data: {
+      ...data,
+    },
+  });
+}
+
+/**
+ * 发起延期异常接口
+ */
+export async function queryDelayException({ orderId, data }) {
+  const accessToken = Cookies.get('access_token');
+  return lyRequest(`${ORDER_SYS_URL}/order/${orderId}`, {
+    method: 'put',    
+    headers: {
+      Authorization: accessToken,
+    },
+    data: {
+      ...data,
+    },
+  });
+}
+
 
 /**
  * 取消订单接口

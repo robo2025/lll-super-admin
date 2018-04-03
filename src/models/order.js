@@ -1,6 +1,8 @@
 import {
   queryOrders,
+  queryDelivery,
   queryExceptionOrders,
+  queryDelayException,
   queryOrderDetail,
   querySearchResults,
   queryCancelOrder,
@@ -24,31 +26,6 @@ export default {
   },
 
   effects: {
-    *fetch({ offset, limit, success, error }, { call, put }) {
-      const res = yield call(queryOrders, { offset, limit });
-      if (res.rescode >> 0 === SUCCESS_STATUS) {
-        if (typeof success === 'function') success(res);
-      } else if (typeof error === 'function') { error(res); return; }
-      const { headers } = res;
-      yield put({
-        type: 'save',
-        payload: res.data,
-        headers,
-      });
-    },
-    *fetchExptionOrders({ offset, limit, success, error }, { call, put }) {
-      const res = yield call(queryExceptionOrders, { offset, limit });
-      if (res.rescode >> 0 === SUCCESS_STATUS) {
-        if (typeof success === 'function') success(res);
-      } else if (typeof error === 'function') { error(res); return; }
-      
-      const { headers } = res;
-      yield put({
-        type: 'saveException',
-        payload: res.data,
-        headers,        
-      });
-    },
     *fetchDetail({ orderId, success, error }, { call, put }) {
       const res = yield call(queryOrderDetail, { orderId });
       if (res.rescode >> 0 === SUCCESS_STATUS) {
@@ -58,6 +35,30 @@ export default {
       yield put({
         type: 'saveDetail',
         payload: res.data,
+      });
+    },
+    *fetchDelayException({ orderId, data, success, error }, { call, put }) {
+      const res = yield call(queryDelayException, { orderId, data });
+      if (res.rescode >> 0 === SUCCESS_STATUS) {
+        if (typeof success === 'function') success(res);
+      } else if (typeof error === 'function') { error(res); return; }
+
+      const response = yield call(queryOrderDetail, { orderId });      
+      yield put({
+        type: 'saveDetail',
+        payload: response.data,
+      });
+    },
+    *fetchDelivery({ orderId, data, success, error }, { call, put }) {
+      const res = yield call(queryDelivery, { orderId, data });
+      if (res.rescode >> 0 === SUCCESS_STATUS) {
+        if (typeof success === 'function') success(res);
+      } else if (typeof error === 'function') { error(res); return; }
+
+      const response = yield call(queryOrderDetail, { orderId });      
+      yield put({
+        type: 'saveDetail',
+        payload: response.data,
       });
     },
     *fetchCancel({ orderId, data, success, error }, { call, put }) {

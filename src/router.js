@@ -17,12 +17,18 @@ function RouterConfig({ history, app }) {
       <Switch>
         <Route path="/" exact render={props => <HomeRouter {...props} />} />
         <Route path="/search" exact render={props => <SearchRouter {...props} />} />
-        <Authorization
-          path="/search/result"
-          exact
-          authority={!!accessToken}
-          redirectPath="/verify"
-        />
+        {
+          Object.keys(routerData).map(val => (
+            <Authorization
+              key={val}
+              path={val}
+              {...routerData[val]}
+              authority={!!accessToken}
+              redirectPath="/verify"
+            />
+          ))
+        }
+
       </Switch>
     </ConnectedRouter>
   );

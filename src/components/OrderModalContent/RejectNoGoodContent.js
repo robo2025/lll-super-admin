@@ -2,7 +2,7 @@
  * @Author: lll 
  * @Date: 2018-03-05 10:15:16 
  * @Last Modified by: lll
- * @Last Modified time: 2018-03-30 09:34:49
+ * @Last Modified time: 2018-04-02 11:25:01
  */
 
 import React, { PureComponent } from 'react';
@@ -37,25 +37,26 @@ export default class RejectContent extends PureComponent {
   }
 
   render() {
-    const { data } = this.props;    
+    const { data, defaultData } = this.props;    
+    const sonOrderInfo = data.son_order_info;        
     console.log('无货驳回modal', data);
     return (
       <div className={styles['modal-content']}>
         <Row>
-          <Col span={12}>订单编号：{data.son_order_sn}</Col>
-          <Col span={12}>下单时间：{moment(data.add_time * 1000).format('YYYY-MM-DD h:mm')}</Col>
+          <Col span={12}>订单编号：{sonOrderInfo.son_order_sn}</Col>
+          <Col span={12}>下单时间：{moment(sonOrderInfo.add_time * 1000).format('YYYY-MM-DD h:mm')}</Col>
         </Row>
         <Row>
-          <Col span={12}>客户公司名称：{data.guest_name}</Col>
+          <Col span={12}>客户公司名称：{sonOrderInfo.guest_company_name}</Col>
         </Row>
         <Row>
-          <Col span={12}>供应商公司名称：{data.supplier_name}</Col>
+          <Col span={12}>供应商公司名称：{sonOrderInfo.supplier_name}</Col>
         </Row>
         <Row>
           <Col span={5}>说明：</Col>
           <Col span={12}>
             <TextArea
-              defaultValue={data.desc}
+              defaultValue={defaultData.desc}
               onChange={(e) => { this.handleTextChange('desc', e.target.value); }}
             />
           </Col>
