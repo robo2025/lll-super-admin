@@ -43,10 +43,10 @@ class ExceptionContent extends Component {
 
   handleSelected = (value) => {
     console.log(`selected ${value}`);
-    if (value >> 0 === 1) {
-      this.setState({ isHaveGoods: true });
-    } else {
+    if (value >> 0 === 9) {
       this.setState({ isHaveGoods: false });
+    } else {
+      this.setState({ isHaveGoods: true });
     }
   }
 
@@ -58,9 +58,9 @@ class ExceptionContent extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { isHaveGoods } = this.state;
-    const { data, defaultValue } = this.props;
+    const { data, defaultData } = this.props;
     const sonOrderInfo = data.son_order_info;
-
+    console.log('异常弹窗', this.props, isHaveGoods);
 
     return (
       <div className={styles['exception-content']}>
@@ -108,38 +108,39 @@ class ExceptionContent extends Component {
                   required: true,
                   message: '请选择异常情况',
                 }],
+                initialValue: defaultData.operation_type.toString(),
               })(
                 <Select onChange={this.handleSelected}>
-                  <Option value="1">无货</Option>
-                  <Option value="2">延期</Option>
+                  <Option value="9">无货</Option>
+                  <Option value="10">延期</Option>
                 </Select>
               )
             }
           </FormItem>
           {
             isHaveGoods ?
-              null
-              :
-              (
-                <FormItem
-                  label="预计发货时间"
-                  {...formItemLayout}
-                >
-                  {
-                    getFieldDecorator('expect_date_of_delivery', {
-                      rules: [{
-                        required: true,
-                        message: '请选择预计发货时间',
-                      }],
-                    })(
-                      <DatePicker
-                        allowClear={false}
-                        disabledDate={current => (this.disabledDate(current, sonOrderInfo.due_time * 1000))}
-                      />
-                    )
-                  }
-                </FormItem>
-              )
+            (
+              <FormItem
+                label="预计发货时间"
+                {...formItemLayout}
+              >
+                {
+                  getFieldDecorator('expect_date_of_delivery', {
+                    rules: [{
+                      required: true,
+                      message: '请选择预计发货时间',
+                    }],
+                  })(
+                    <DatePicker
+                      allowClear={false}
+                      disabledDate={current => (this.disabledDate(current, sonOrderInfo.due_time * 1000))}
+                    />
+                  )
+                }
+              </FormItem>
+            )
+            :
+            null
           }
 
           <FormItem
@@ -151,6 +152,7 @@ class ExceptionContent extends Component {
                 rules: [{
                   required: true,
                   message: '请填写说明原因',
+                  initialValue: defaultData.remarks,
                 }],
               })(
                 <TextArea rows={4} />

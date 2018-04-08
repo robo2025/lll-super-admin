@@ -2,7 +2,7 @@
  * @Author: lll 
  * @Date: 2018-03-05 10:15:16 
  * @Last Modified by: lll
- * @Last Modified time: 2018-04-02 14:45:08
+ * @Last Modified time: 2018-04-08 13:46:25
  */
 
 import React, { PureComponent } from 'react';
@@ -87,9 +87,9 @@ export default class RejectDelayOrderContent extends PureComponent {
                   required: true,
                   message: '请选择一个责任方',
                 }],
+              initialValue: defaultData.responsible_party.toString(),
               })(
                 <Select
-                  defaultValue={defaultData.responsible_party.toString()}
                   style={{ width: 120 }}
                   onChange={(e) => { this.handleSelectChange('responsible_party', e); }}
                 >

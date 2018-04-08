@@ -5,6 +5,7 @@ import RejectDelayContent from './RejectDelayContent';
 import ExceptionContent from './ExceptionContent';
 import RefundContent from './RefundContent';
 import RejectNoGoodContent from './RejectNoGoodContent';
+import PaymentContent from './PaymentContent';
 
 export {
  CancelContent,
@@ -14,4 +15,5 @@ export {
  ExceptionContent,
  RefundContent,
  RejectNoGoodContent,
+ PaymentContent,
 };

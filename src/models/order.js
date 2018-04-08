@@ -4,12 +4,12 @@ import {
   queryExceptionOrders,
   queryDelayException,
   queryOrderDetail,
-  querySearchResults,
   queryCancelOrder,
   queryAgreeNoGood,
   queryRejectNoGood,
   queryAgreeDelay,
   queryRejectDelay,
+  queryPayment,
 } from '../services/order';
 import { SUCCESS_STATUS } from '../constant/config.js';
 
@@ -131,15 +131,16 @@ export default {
         headers,
       });
     },
-    *fetchSearch({ data, success, error }, { call, put }) {
-      const res = yield call(querySearchResults, { ...data });
+    *fetchPayment({ orderId, data, success, error }, { call, put }) {
+      const res = yield call(queryPayment, { orderId, data });
       if (res.rescode >> 0 === SUCCESS_STATUS) {
         if (typeof success === 'function') success(res);
       } else if (typeof error === 'function') { error(res); return; }
 
+      const response = yield call(queryOrderDetail, { orderId });      
       yield put({
-        type: 'saveSearch',
-        payload: res.data,
+        type: 'saveDetail',
+        payload: response.data,
       });
     },
   },
