@@ -2,7 +2,7 @@
  * @Author: lll 
  * @Date: 2018-03-05 10:17:15 
  * @Last Modified by: lll
- * @Last Modified time: 2018-04-02 14:41:20
+ * @Last Modified time: 2018-04-08 17:31:26
  */
 import React, { PureComponent } from 'react';
 import moment from 'moment';
@@ -37,38 +37,22 @@ const formItemLayout2 = {
 // 延迟收货弹出层内容 
 @Form.create({
   onValuesChange: (props, fields) => {
-    props.onChange(fields);
+    if (fields.expect_date_of_delivery) {
+      const ExpectTime = fields.expect_date_of_delivery.format('YYYY-MM-DD');
+      props.onChange({ expect_date_of_delivery: ExpectTime });
+    } else {
+      props.onChange(fields);
+    }
   },
 })
 export default class ReminderContent extends PureComponent {
-  state = {
-    desc: '',
-  }
-
   componentDidMount() {
     this.props.handleValidate(this.props.form);
   }
 
-  // 处理时间选择器改变
-  handleDataPickerChange = (key, data, dateString) => {
-    console.log(data, dateString);
-    const tempJson = {};
-    tempJson[key] = dateString;
-    this.props.onChange(tempJson);
-  }
-
-  // 处理输入框改变
-  handleTextChange = (key, text) => {
-    const tempJson = {};
-    tempJson[key] = text;
-    this.setState(tempJson);
-    this.props.onChange(tempJson);
-  }
-
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { desc } = this.state;
-    const { data } = this.props;
+    const { data, defaultData } = this.props;
     const sonOrderInfo = data.son_order_info;
     console.log('延期Modal', data);
     return (
@@ -90,17 +74,16 @@ export default class ReminderContent extends PureComponent {
             {...formItemLayout}
           >
             {
-              getFieldDecorator('due_time', {
+              getFieldDecorator('expect_date_of_delivery', {
                 rules: [{
                   required: false,
                   message: '请设定延迟时间',
                 }],
+                initialValue: moment(sonOrderInfo.due_time * 1000),                
               })(
                 <DatePicker
-                  defaultValue={moment(sonOrderInfo.due_time * 1000)}
                   format={dateFormat}
                   disabledDate={current => (current && current < moment(sonOrderInfo.due_time * 1000).endOf('day'))}
-                  onChange={(date, dateString) => { this.handleDataPickerChange('due_time', date, dateString); }}
                 />
               )
             }
@@ -111,16 +94,14 @@ export default class ReminderContent extends PureComponent {
             {...formItemLayout2}
           >
             {
-              getFieldDecorator('desc', {
+              getFieldDecorator('remarks', {
                 rules: [{
                   required: false,
                   message: '请补充延迟说明',
                 }],
+                initialValue: defaultData.remarks,
               })(
-                <TextArea
-                  value={desc}
-                  onChange={(e) => { this.handleTextChange('desc', e.target.value); }}
-                />
+                <TextArea />
               )
             }
           </FormItem>

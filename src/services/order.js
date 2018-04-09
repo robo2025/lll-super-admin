@@ -47,6 +47,23 @@ export async function queryOrderDetail({ orderId }) {
 }
 
 /**
+ * 接单接口
+ * 
+*/
+export async function queryTakingOrder({ orderId, data }) {
+  const accessToken = Cookies.get('access_token');
+  return lyRequest(`${ORDER_SYS_URL}/order/${orderId}`, {
+    method: 'put',    
+    headers: {
+      Authorization: accessToken,
+    },
+    data: {
+      ...data,
+    },
+  });
+}
+
+/**
  * 发货接口
  * 
  */

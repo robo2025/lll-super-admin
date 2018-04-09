@@ -19,7 +19,7 @@ import { queryString, handleServerMsgObj } from '../../utils/util';
 import styles from './SearchResult.less';
 
 // 操作状态
-const mapActions = ['接单', '发货', '触发异常', '同意延期', '驳回延期', '同意无货', '驳回无货', '取消订单', '完成支付'];
+const mapActions = ['接单', '发货', '触发异常', '同意延期', '驳回延期', '同意无货并退款', <span>驳回无货<small>&nbsp;&nbsp;订单将流转到待结单状态</small></span>, '取消订单', '完成支付'];
 
 @connect(({ orders, loading }) => ({
   orders,
@@ -33,6 +33,9 @@ export default class SearchResult extends Component {
       isShowModal: false,
       actionsIdx: 1,
       orderId: '',
+      takingOrderData: {// 接单默认数据
+        operation_type: 7,
+      },
       deliveryData: { // 发货默认数据
         operation_type: 4,
         logistics_company: '',
@@ -42,24 +45,31 @@ export default class SearchResult extends Component {
         operation_type: 9,
         remarks: '',
       },
-      agreeDelayData: {
-
+      agreeDelayData: { // 同意延期默认数据
+        operation_type: 2,
+        is_pass: 1,
+        remarks: '',
       },
       rejectDelayData: { // 驳回延期默认数据
+        operation_type: 2,
         responsible_party: 1,
-        desc: '',
+        is_pass: 0,
+        remarks: '',
       },
       refundData: {// 无货，同意退款默认数据
+        operation_type: 6,
         responsible_party: 1,
-        desc: '',
+        is_pass: 1,
+        remarks: '',
       },
       rejectNoGoodData: {// 无货：驳回默认数据
-        operation_type: 9,
-        desc: '',
+        operation_type: 6,
+        is_pass: 0,
+        remarks: '',
       },
       cancelData: {// 取消订单：默认数据
         responsible_party: 1,
-        desc: '',
+        cancel_desc: '',
       },
       paymentData: {// 支付：默认数据
         operation_type: 5,
@@ -132,7 +142,7 @@ export default class SearchResult extends Component {
     console.log('模态框内容改变了', idx, values);
     switch (idx) {
       case 1: // 接单
-        return (<div>接单</div>);
+        return (<div>替供应商接单</div>);
       case 2: { // 发货
         const { deliveryData } = this.state;
         this.setState({ deliveryData: { ...deliveryData, ...values } });
@@ -203,6 +213,7 @@ export default class SearchResult extends Component {
   handleOkModal = (idx) => {
     const { args,
       orderId,
+      takingOrderData,
       deliveryData,
       paymentData,
       exceptionData,
@@ -212,7 +223,10 @@ export default class SearchResult extends Component {
       rejectNoGoodData,
       cancelData,
     } = this.state;
-
+    if (idx === 1) {
+      this.dispatchTakingOrder(args.id, takingOrderData);
+      return;
+    }
     // 校验表单
     this.formObj.validateFields((error, values) => {
       if (error) {
@@ -222,8 +236,10 @@ export default class SearchResult extends Component {
           isShowModal: false,
         });
         switch (idx) {
-          case 1: // 接单
-            return (<div>接单</div>);
+          case 1: { // 接单
+            this.dispatchTakingOrder(args.id, takingOrderData);
+            break;
+          }
           case 2: { // 发货
             this.dispatchDelivery(args.id, deliveryData);
             break;
@@ -269,6 +285,24 @@ export default class SearchResult extends Component {
     console.log('我被调用了');
     // 将子组件的this.props.form传给父组件，方便后面校验
     this.formObj = formObj;
+  }
+
+  // 发起接单
+  dispatchTakingOrder = (orderId, data) => {
+    const { dispatch } = this.props;
+    const that = this;
+    dispatch({
+      type: 'orders/fetchTakingOrder',
+      orderId,
+      data,
+      success: () => {
+        that.setState({
+          isShowModal: false,
+        });
+        message.success('接单成功');
+      },
+      error: (res) => { message.error(handleServerMsgObj(res.msg)); },
+    });
   }
 
   // 发起发货操作
@@ -372,6 +406,7 @@ export default class SearchResult extends Component {
       isShowModal,
       actionsIdx,
       orderId,
+      agreeDelayData,
       deliveryData,
       exceptionData,
       rejectDelayData,
@@ -394,7 +429,7 @@ export default class SearchResult extends Component {
         <Menu.Item key="3">触发异常</Menu.Item>
         <Menu.Item key="4">同意延期</Menu.Item>
         <Menu.Item key="5">驳回延期</Menu.Item>
-        <Menu.Item key="6">同意退款</Menu.Item>
+        <Menu.Item key="6">同意无货并退款</Menu.Item>
         <Menu.Item key="7">驳回无货</Menu.Item>
         <Menu.Item key="8">取消订单</Menu.Item>
       </Menu>
@@ -418,7 +453,7 @@ export default class SearchResult extends Component {
       console.log('modal idx', modalIdx, typeof modalIdx);
       switch (modalIdx) {
         case 1:
-          return (<div>接单</div>);
+          return (<div>替供应商接单</div>);
         case 2:
           return (
             <DeliverContent
@@ -441,6 +476,7 @@ export default class SearchResult extends Component {
           return (
             <DelayContent
               data={orders.detail}
+              defaultData={agreeDelayData}              
               onChange={values => this.handleModalContentChange(4, values)}
               handleValidate={this.validateForm}
             />

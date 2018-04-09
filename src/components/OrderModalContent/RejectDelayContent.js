@@ -2,7 +2,7 @@
  * @Author: lll 
  * @Date: 2018-03-05 10:15:16 
  * @Last Modified by: lll
- * @Last Modified time: 2018-04-08 13:46:25
+ * @Last Modified time: 2018-04-08 17:40:15
  */
 
 import React, { PureComponent } from 'react';
@@ -42,22 +42,10 @@ const formItemLayout2 = {
   },
 })
 export default class RejectDelayOrderContent extends PureComponent {
-  // 处理下拉列表改变
-  handleSelectChange = (key, value) => {
-    const { onChange } = this.props;
-    const tempJson = {};
-    tempJson[key] = value;
-    onChange(tempJson);
+  componentDidMount() {
+    this.props.handleValidate(this.props.form);
   }
-
-  // 处理输入框改变
-  handleTextChange = (key, text) => {
-    const { onChange } = this.props;
-    const tempJson = {};
-    tempJson[key] = text;
-    onChange(tempJson);
-  }
-
+  
   render() {
     const { getFieldDecorator } = this.props.form;
     const { data, defaultData } = this.props;
@@ -87,11 +75,10 @@ export default class RejectDelayOrderContent extends PureComponent {
                   required: true,
                   message: '请选择一个责任方',
                 }],
-              initialValue: defaultData.responsible_party.toString(),
+                initialValue: defaultData.responsible_party.toString(),
               })(
                 <Select
                   style={{ width: 120 }}
-                  onChange={(e) => { this.handleSelectChange('responsible_party', e); }}
                 >
                   <Option value="1">客户</Option>
                   <Option value="2">供应商</Option>
@@ -106,16 +93,14 @@ export default class RejectDelayOrderContent extends PureComponent {
             {...formItemLayout2}
           >
             {
-              getFieldDecorator('desc', {
+              getFieldDecorator('remarks', {
                 rules: [{
                   required: false,
                   message: '请填写补充说明',
                 }],
+                initialValue: defaultData.remarks,
               })(
-                <TextArea
-                  defaultValue={defaultData.desc}
-                  onChange={(e) => { this.handleTextChange('desc', e.target.value); }}
-                />
+                <TextArea />
               )
             }
           </FormItem>

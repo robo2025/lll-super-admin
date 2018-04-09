@@ -2,7 +2,7 @@
  * @Author: lll 
  * @Date: 2018-03-05 10:15:16 
  * @Last Modified by: lll
- * @Last Modified time: 2018-04-08 13:45:27
+ * @Last Modified time: 2018-04-08 17:28:15
  */
 import React, { PureComponent } from 'react';
 import moment from 'moment';
@@ -103,11 +103,11 @@ export default class CancelContent extends PureComponent {
           {...formItemLayout}
         >
           {
-            getFieldDecorator('desc', {
+            getFieldDecorator('cancel_desc', {
               rules: [{
                 required: true,
                 message: '请填写说明原因',
-                initialValue: defaultData.desc,
+                initialValue: defaultData.cancel_desc,
               }],
             })(
               <TextArea rows={4} />
