@@ -240,9 +240,9 @@ export default class OrderDetail extends Component {
       <div className={styles['order-detail']}>
         <div className="relate-orders">
           <span className="title">关联订单：</span>
-          <span className="item"><a href="">退款单</a></span>
-          <span className="item"><a href="">退货单</a></span>
-          <span className="item"><a href="">无货单</a></span>
+          <span className="item"><a>退款单</a></span>
+          <span className="item"><a>退货单</a></span>
+          <span className="item"><a>无货单</a></span>
         </div>
         <DescriptionList size="large" title="订单信息" style={{ marginBottom: 32 }}>
           <Description term="客户订单编号">{son_order_info.son_order_sn}</Description>

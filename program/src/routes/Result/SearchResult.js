@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Cookies from 'js-cookie';
-import { Layout, Card, Menu, Dropdown, message, Modal } from 'antd';
+import { Layout, Card, Menu, Dropdown, message, Modal, Spin } from 'antd';
 import { connect } from 'dva';
 import Header from '../../components/Header/index';
 import { OrderDetail } from '../../components/OrderDetail';
@@ -476,7 +476,7 @@ export default class SearchResult extends Component {
           return (
             <DelayContent
               data={orders.detail}
-              defaultData={agreeDelayData}              
+              defaultData={agreeDelayData}
               onChange={values => this.handleModalContentChange(4, values)}
               handleValidate={this.validateForm}
             />
@@ -547,24 +547,26 @@ export default class SearchResult extends Component {
         <div id="resultStats">
           搜索结果
         </div>
-        <Card bordered={false} className="order-card">
-          {
-            Array.isArray(orders.detail) ?
-              (
-                <OrderList
-                  data={orders.detail}
-                  onHandleOrderClick={this.handleModalToggle}
-                />
-              )
-              :
-              (
-                <OrderDetail
-                  data={orders.detail}
-                />
-              )
-          }
+        <Spin spinning={this.props.loading.models.orders}>
+          <Card bordered={false} className="order-card">
+            {
+              Array.isArray(orders.detail) ?
+                (
+                  <OrderList
+                    data={orders.detail}
+                    onHandleOrderClick={this.handleModalToggle}
+                  />
+                )
+                :
+                (
+                  <OrderDetail
+                    data={orders.detail}
+                  />
+                )
+            }
 
-        </Card>
+          </Card>
+        </Spin>
         {/* 无货同意并退款Modal */}
         <Modal
           width={650}
