@@ -290,6 +290,13 @@ export default class OrderDetail extends Component {
           dataSource={orderGoodsList}
           columns={goodsColumns}
           rowKey="abc"
+          onRow={(record) => {
+            return {
+              onClick: () => {
+                window.open('https://www.robo2025.com/productsInfo.html?productId=' + record.goods_sn);
+              },
+            };
+          }}
         />
         <div className={styles['extra-good-info']}>
           <Row gutter={8} justify="end" align="end" type="flex">
