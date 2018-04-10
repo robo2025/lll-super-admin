@@ -293,6 +293,7 @@ export default class OrderDetail extends Component {
           onRow={(record) => {
             return {
               onClick: () => {
+                console.log('商品信息', record);
                 window.open('https://www.robo2025.com/productsInfo.html?productId=' + record.goods_sn);
               },
             };
