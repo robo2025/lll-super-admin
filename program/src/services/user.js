@@ -5,10 +5,10 @@ import { URL, USERS_URL, LOGIN_URL, LOGOUT_URL, REGISTER_URL, VERIFY_PAGE, HOME_
 
 // 获取用户信息
 export async function getUserInfo() {
-  const access_token = Cookies.get('access_token');
+  const accessToken = Cookies.get('access_token');
   return lyRequest(`${URL}/server/verify`, {
     headers: {
-      Authorization: access_token,
+      Authorization: accessToken,
     },
   });
 }
@@ -16,10 +16,10 @@ export async function getUserInfo() {
 
 // 获取供应商信息
 export async function getSupplierInfo(supplierid) {
-  const access_token = Cookies.get('access_token');
+  const accessToken = Cookies.get('access_token');
   return lyRequest(`${USERS_URL}/suppliers/${supplierid}`, {
     headers: {
-      Authorization: access_token,
+      Authorization: accessToken,
     },
   });
 }

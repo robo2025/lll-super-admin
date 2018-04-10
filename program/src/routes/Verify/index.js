@@ -9,7 +9,6 @@ import { HOME_PAGE } from '../../constant/config';
 })
 export default class Verify extends React.Component {
   componentDidMount() {
-    console.log('验证页面加载好了!');
     verifyLogin();
     const { dispatch } = this.props;
     dispatch({
