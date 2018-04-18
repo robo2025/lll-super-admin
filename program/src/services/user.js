@@ -50,5 +50,5 @@ export function login() {
 export function jumpToLogin() {
   // window.location.href = `${LOGIN_URL}?next=${encodeURIComponent(VERIFY_PAGE)}`;  
   // window.location.href = URL;
-  window.location.href = `${LOGIN_URL}?next=${encodeURIComponent(HOME_PAGE)}&disable_redirect=1`;
+  window.location.href = `${LOGIN_URL}?next=${encodeURIComponent(VERIFY_PAGE)}&disable_redirect=1`;
 }
