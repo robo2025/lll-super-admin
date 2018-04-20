@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import { Card, Table, Divider, Row, Col } from 'antd';
+import {ACTION_STATUS,ORDER_STATUS} from "../../constant/statusList"
 import DescriptionList from '../DescriptionList';
 
 import styles from './OrderDetail.less';
 
 const { Description } = DescriptionList;
-const goodsData = [];// 订单商品数据
-const logisticsData = [];
-// 订单状态
-const mapOrderStatus = ['全部', '待支付', '已取消', '已接单', '待发货', '已发货', '已确认收货', '已完成', '申请延期', '确认延期', '退款', '退货', '作废', '无货'];
+
 // 支付状态
 const mapPayStatus = ['全部', '未支付', '已支付'];
 
@@ -90,33 +88,6 @@ const logisticsColumns = [{
   dataIndex: 'delivery_id',
   key: 'delivery_id',
 }];
-for (let i = 0; i < 3; i++) { // 生成订单商品假数据
-  goodsData.push({
-    id: i + 1,
-    name: '测试' + i,
-    type: '测试' + i,
-    price: 10,
-    num: 5,
-    delivery: '当天',
-    yh: 0,
-    price2: 10,
-    amount: 50,
-  });
-}
-for (let i = 0; i < 3; i++) { // 生成订单商品假数据
-  logisticsData.push({
-    id: i + 1,
-    goodName: '压轧滚珠丝杠　轴径28·32、螺距6·10·32 标准螺帽' + i,
-    type: '测试' + i,
-    brand: '欧姆龙',
-    num: 5,
-    delivery: '2017-12-7 11:45:30',
-    delivery_man: '王麻子',
-    mobile: '13574488306',
-    delivery_company: '恒运货运',
-    delivery_id: 'HYWL12345789',
-  });
-}
 // 操作日志tab
 const operationTabList = [{
   key: 'tab1',
@@ -128,8 +99,9 @@ const operationTabList = [{
 // 操作日志列
 const actionColumns = [{
   title: '操作记录ID',
-  dataIndex: 'id',
-  key: 'id',
+  dataIndex: 'status',
+  key: 'status',
+  render:(text)=>(<span>{ACTION_STATUS[text]}</span>)
 }, {
   title: '操作员',
   dataIndex: 'operator',
@@ -247,7 +219,7 @@ export default class OrderDetail extends Component {
         <DescriptionList size="large" title="订单信息" style={{ marginBottom: 32 }}>
           <Description term="客户订单编号">{son_order_info.son_order_sn}</Description>
           <Description term="支付状态">{mapPayStatus[payment_info.pay_status]}</Description>
-          <Description term="订单状态">{mapOrderStatus[son_order_info.status]}</Description>
+          <Description term="订单状态">{ORDER_STATUS[son_order_info.status]}</Description>
           <Description term="母订单编号">{mother_info.order_sn}</Description>
           <Description term="下单时间" >{moment(son_order_info.add_time * 1000).format('YYYY-MM-DD h:mm:ss')}</Description>
         </DescriptionList>
@@ -255,7 +227,7 @@ export default class OrderDetail extends Component {
         <DescriptionList size="large" title="客户信息" style={{ marginBottom: 32 }}>
           <Description term="用户姓名">{mother_info.receiver}</Description>
           <Description term="联系电话">{mother_info.mobile}</Description>
-          <Description term="公司名称">菜鸟仓储</Description>
+          <Description term="公司名称">不知道</Description>
           <Description term="收货地址">
             {`${mother_info.province}
              ${mother_info.city}     
@@ -269,7 +241,7 @@ export default class OrderDetail extends Component {
         <DescriptionList size="large" title="开票信息" style={{ marginBottom: 32 }}>
           <Description term="公司全称">{receipt_info.title}</Description>
           <Description term="公司账户">{receipt_info.account}</Description>
-          <Description term="税务编号">菜鸟仓储</Description>
+          <Description term="税务编号">{receipt_info.tax_number}</Description>
           <Description term="公司电话">{receipt_info.telephone}</Description>
           <Description term="开户银行">{receipt_info.bank}</Description>
           <Description term="公司地址">{receipt_info.company_address}</Description>
@@ -278,7 +250,7 @@ export default class OrderDetail extends Component {
         <DescriptionList size="large" title="供应商信息" style={{ marginBottom: 32 }}>
           <Description term="联系人">{supplier_info.linkman}</Description>
           <Description term="联系电话">{supplier_info.mobile}</Description>
-          <Description term="公司名称">菜鸟仓储</Description>
+          <Description term="公司名称">{supplier_info.company_name}</Description>
           <Description term="收货地址">{supplier_info.address}</Description>
         </DescriptionList>
         <Divider style={{ marginBottom: 32 }} />
