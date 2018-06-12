@@ -20,7 +20,7 @@ export default class SearchOrder extends Component {
               <img
                 width={300}
                 height={180}
-                src="https://newhome.robo2025.com/images/logo.png"
+                src="https://imgcdn.robo2025.com/frontShop/index/logo.png"
                 alt="logo"
               />
             </a>

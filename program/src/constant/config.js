@@ -3,21 +3,20 @@
 * */
 
 // 单点登录URL
-export const URL = 'https://login.robo2025.com';
+export const URL = 'https://testlogin.robo2025.com';
 
 // 网站内容接口URL
 export const API_URL = '//api-product.robo2025.com/api/admin';
 
 // 上传文件获取token URL
-export const UPLOAD_URL = '//api-common-service.robo2025.com';
+export const UPLOAD_URL = 'https://api.robo2025.com/common';
 
 // 用户管理系统API URL
-export const USERS_URL = '//api-user.robo2025.com/api';
+export const USERS_URL = 'https://api.robo2025.com/user/service';
 
 // 订单系统接口
-export const ORDERS_URL = '//api-order.robo2025.com';
+export const ORDERS_URL = 'https://api.robo2025.com/order';
 // export const ORDERS_URL = 'http://192.168.4.4:8009';
-
 
 // 验证登录接口URL
 export const LOGIN_URL = `${URL}/server/authorize`;

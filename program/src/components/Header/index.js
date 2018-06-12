@@ -55,7 +55,7 @@ export default class Header extends Component {
           <a href="/#">
             <img
               width={120}
-              src="https://newhome.robo2025.com/images/logo.png"
+              src="https://imgcdn.robo2025.com/frontShop/index/logo.png"
               alt="logo"
             />
           </a>

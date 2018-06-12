@@ -13,7 +13,7 @@ const mapPayStatus = ['全部', '未支付', '已支付'];
 
 // 订单列
 const goodsColumns = [{
-  title: '商品编号',
+  title: '商品ID',
   dataIndex: 'goods_sn',
   key: 'goods_sn',
 }, {
@@ -53,8 +53,8 @@ const goodsColumns = [{
 // 发货记录列
 const logisticsColumns = [{
   title: '商品名称',
-  dataIndex: 'goodName',
-  key: 'goodName',
+  dataIndex: 'goods_name',
+  key: 'goods_name',
 }, {
   title: '型号',
   dataIndex: 'type',
@@ -73,8 +73,8 @@ const logisticsColumns = [{
   key: 'delivery',
 }, {
   title: '送货人',
-  dataIndex: 'delivery_man',
-  key: 'delivery_man',
+  dataIndex: 'sender',
+  key: 'sender',
 }, {
   title: '联系号码',
   dataIndex: 'mobile',
